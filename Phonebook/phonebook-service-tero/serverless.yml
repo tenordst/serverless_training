@@ -23,6 +23,18 @@ service: phonebook-service-tero
 provider:
   name: aws
   runtime: nodejs12.x
+  environment:
+    PHONEBOOK_TABLE: ${self:service}-table
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:*"
 
 # you can overwrite defaults here
 #  stage: dev
@@ -58,12 +70,16 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
+  fetch:
     handler: handler.fetch
     events:
       - http:
           path: phonebook
           method: get
+
+resources: 
+  - ${file(./dynamodb.yml)}
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
