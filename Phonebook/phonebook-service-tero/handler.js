@@ -4,7 +4,7 @@
 var AWS = require('aws-sdk');
 
 module.exports.fetch = async (event, _context, callback) => {
-  console.log('Received event, content ' + JSON.stringify(event));
+  console.log('Fetch, received event, content ' + JSON.stringify(event));
 
   // Create DynamoDB document client
   var docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
@@ -30,3 +30,30 @@ module.exports.fetch = async (event, _context, callback) => {
     });
   }
 };
+
+module.exports.post = async (event, _context, callback) => {
+  console.log('Post, received event, body ' + JSON.stringify(JSON.parse(event.body)));
+
+  // Create DynamoDB document client
+  var docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+
+  var params = {
+    TableName : process.env.PHONEBOOK_TABLE,
+    Item: JSON.parse(event.body),
+  };
+  
+  try {
+    var result = await docClient.put(params).promise();
+    console.log('Result for DynamoDB put ' + JSON.stringify(result));
+    callback(null, { 
+      statusCode: 200, 
+    });
+  } catch (e) {
+    console.log('Error ' + JSON.stringify(e));
+    callback(null, { 
+      statusCode: 500, 
+      body: JSON.stringify(e)
+    });
+  }
+};
+
