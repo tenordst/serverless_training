@@ -1,0 +1,5 @@
+{
+    "Effect": "Allow",
+    "Action": "rekognition:DetectLabels",
+    "Resource": "*"
+}

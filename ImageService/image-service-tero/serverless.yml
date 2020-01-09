@@ -18,6 +18,9 @@ provider:
   runtime: nodejs12.x
   environment:
     IMAGE_BUCKET: ${self:service}-bucket
+  iamRoleStatements:
+    - ${file(./lambda_rekognition_policy.json)}
+    - ${file(./lambda_s3_policy.json)}
 
 functions:
   analyzeImage:
