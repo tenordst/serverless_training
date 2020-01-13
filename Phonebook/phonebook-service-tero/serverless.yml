@@ -36,12 +36,14 @@ functions:
       - http:
           path: phonebook
           method: get
+          authorizer: aws_iam
   post:
     handler: handler.post
     events:
       - http:
           path: phonebook
           method: post
+          authorizer: aws_iam
 
 resources: 
   - ${file(./dynamodb.yml)}
