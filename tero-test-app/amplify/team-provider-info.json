@@ -1,0 +1,20 @@
+{
+    "test": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-tero-test-app-test-185402-authRole",
+            "UnauthRoleArn": "arn:aws:iam::159895034633:role/amplify-tero-test-app-test-185402-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::159895034633:role/amplify-tero-test-app-test-185402-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-tero-test-app-test-185402-deployment",
+            "UnauthRoleName": "amplify-tero-test-app-test-185402-unauthRole",
+            "StackName": "amplify-tero-test-app-test-185402",
+            "StackId": "arn:aws:cloudformation:us-east-1:159895034633:stack/amplify-tero-test-app-test-185402/a6edda10-37b7-11ea-b158-0e167b726915",
+            "AmplifyAppId": "d2l7czyuofifhu"
+        },
+        "categories": {
+            "auth": {
+                "terotestappa74fbd6e": {}
+            }
+        }
+    }
+}
