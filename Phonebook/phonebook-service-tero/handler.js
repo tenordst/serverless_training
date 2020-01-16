@@ -20,12 +20,20 @@ module.exports.fetch = async (event, _context, callback) => {
     console.log('Result for DynamoDB get ' + JSON.stringify(result.Item));
     callback(null, { 
       statusCode: 200, 
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(result.Item)
     });
   } catch (e) {
     console.log('Error ' + JSON.stringify(e));
     callback(null, { 
       statusCode: 500, 
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(e)
     });
   }
@@ -47,11 +55,19 @@ module.exports.post = async (event, _context, callback) => {
     console.log('Result for DynamoDB put ' + JSON.stringify(result));
     callback(null, { 
       statusCode: 200, 
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
     });
   } catch (e) {
     console.log('Error ' + JSON.stringify(e));
     callback(null, { 
       statusCode: 500, 
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(e)
     });
   }

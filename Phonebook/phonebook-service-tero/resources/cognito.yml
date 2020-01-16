@@ -1,0 +1,38 @@
+Resources:
+  UserPool:
+    Type: "AWS::Cognito::UserPool"
+    Properties:
+      UserPoolName: ${self:service}-${self:provider.stage}-userPool
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: false
+          RequireUppercase: false
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+  WebAppClient:
+    Type: "AWS::Cognito::UserPoolClient"
+    Properties:
+      ClientName: "${self:service}-webclient"
+      GenerateSecret: false
+      UserPoolId: { Ref: UserPool }
+  IdentityPool:
+    Type: "AWS::Cognito::IdentityPool"
+    Properties:
+      IdentityPoolName: ${self:service}-${self:provider.stage}_identityPool
+      AllowUnauthenticatedIdentities: true
+      CognitoIdentityProviders:
+        - ClientId: { Ref: WebAppClient }
+          ProviderName: { Fn::GetAtt: ["UserPool", "ProviderName"] }
+  IdentityPoolRoleMap:
+    Type: "AWS::Cognito::IdentityPoolRoleAttachment"
+    Properties:
+      IdentityPoolId: { Ref: IdentityPool }
+      Roles:
+        unauthenticated: { Fn::GetAtt: [UnauthRole, Arn] }
+        authenticated: { Fn::GetAtt: [AuthRole, Arn] }

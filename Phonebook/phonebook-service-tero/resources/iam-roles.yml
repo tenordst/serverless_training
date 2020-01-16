@@ -1,0 +1,53 @@
+Resources:
+  AuthRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: ${self:service}-${self:provider.stage}-auth-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: cognito-identity.amazonaws.com
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                'cognito-identity.amazonaws.com:aud':
+                  Ref: IdentityPool
+              'ForAnyValue:StringLike':
+                'cognito-identity.amazonaws.com:amr': authenticated
+      Policies:
+        - PolicyName: ${self:service}-${self:provider.stage}-auth-rest-api
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: execute-api:Invoke
+                Resource:
+                  - {
+                      Fn::Join:
+                        [
+                          "",
+                          [
+                            "arn:aws:execute-api:${self:provider.region}:",
+                            { Ref: AWS::AccountId },
+                            ":",
+                            { Ref: ApiGatewayRestApi },
+                            "/*",
+                          ],
+                        ]
+                    }
+  UnauthRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: ${self:service}-${self:provider.stage}-unauth-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: cognito-identity.amazonaws.com
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              ForAnyValue:StringLike:
+                "cognito-identity.amazonaws.com:amr": "unauthenticated"

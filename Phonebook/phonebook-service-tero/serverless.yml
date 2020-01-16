@@ -37,6 +37,7 @@ functions:
           path: phonebook
           method: get
           authorizer: aws_iam
+          cors: true
   post:
     handler: handler.post
     events:
@@ -44,6 +45,9 @@ functions:
           path: phonebook
           method: post
           authorizer: aws_iam
+          cors: true
 
 resources: 
   - ${file(./dynamodb.yml)}
+  - ${file(./resources/cognito.yml)}
+  - ${file(./resources/iam-roles.yml)}
